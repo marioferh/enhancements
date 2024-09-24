@@ -42,7 +42,7 @@ tracking-link:
 
 ## Motivation
 
-* The specification is well known and to a degree self-documenting.
+* The specification is well known and largely self-documenting.
 * The Kubernetes API Server validates custom resources based on their API specification, so users get immediate feedback on errors instead of checking the ClusterOperator object and the cluster monitoring operator's logs. Common expressions language even allows to write complex validation logic, including cross-field tests.
 * Many users expect to interact with operators through a CRD.
 * Custom resources play better with GitOps workflows. 
@@ -226,6 +226,7 @@ Migration path it will be split in three phases
   - Work with a Feature flag.
   - Two options: ConfigMap or CRD.
       Preference is to use ConfigMap over CRD during this phase.
+  - The merge process look at top-level fields
   - Behavior: If an entry exists in the ConfigMap, ignore the CRD.
       If there’s no entry in the ConfigMap, use the CRD.
   - Merge Process (only for phase 1)
@@ -269,11 +270,8 @@ Migration path it will be split in three phases
 ### Open questions
 
 - Merge CRD and ConfigMap could be error prone and will need extra test
-- Change of types and names and how handle it when there are CRD and ConfigMap
-- Which tools/mechanisms do we provide to cluster admins to minimize the migration burden? Should CMO automatically create the custom resource from the current ConfigMap when the CRD becomes GA? Or do we want a semi-automated approach with explicit approval from the cluster admins?
 - Should we provide an escape hatch (via some annotation?) telling CMO to ignore the custom resource and only use the ConfigMap in case something goes bad?
-- How do we tell cluster admins that they need to migrate? CMO conditions could be an option as well as alerting and Insights?- How do we know how many clusters have migrated to the new CRD? Telemetry I guess.
-- How long should we keep the support for the ConfigMap?
+- How do we tell cluster admins that they need to migrate? CMO conditions could be an option as well as alerting and Insights?- How do we know how many clusters have migrated to the new CRD? Telemetry?
 
 ## Graduation Criteria
 
